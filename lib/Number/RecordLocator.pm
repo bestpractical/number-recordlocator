@@ -10,7 +10,7 @@ use vars qw/%CHAR_TO_INT %INT_TO_CHAR $INITIALIZED/;
 
 =head1 NAME
 
-Number::RecordLocator - [One line description of module's purpose here]
+Number::RecordLocator - Encodes integers into a short and easy to read and pronounce "locator string"
 
 
 =head1 SYNOPSIS
