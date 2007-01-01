@@ -1,6 +1,6 @@
 package Number::RecordLocator;
 
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use warnings;
 use strict;
@@ -117,7 +117,6 @@ sub decode {
     my $str = uc(shift);
     my $integer = 0;
     foreach my $char (split(//,$str)){
-        use YAML;
        my $char = $CHAR_TO_INT{$char};
        return undef unless defined $char;
        $integer = ($integer * 32) +   $char;
