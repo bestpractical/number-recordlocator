@@ -1,12 +1,12 @@
 package Number::RecordLocator;
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 use warnings;
 use strict;
 use Carp;
 
-use vars qw/%CHAR_TO_INT %INT_TO_CHAR $INITIALIZED/;
+use vars qw/%CHAR_TO_INT %INT_TO_CHAR $INITIALIZED %CHAR_REMAP/;
 
 =head1 NAME
 
@@ -78,10 +78,15 @@ sub init {
     $INT_TO_CHAR{$counter} = $_;
     $counter++;
   }
-  $CHAR_TO_INT{'0'} = $CHAR_TO_INT{'O'};
-  $CHAR_TO_INT{'1'} = $CHAR_TO_INT{'I'};
-  $CHAR_TO_INT{'S'} = $CHAR_TO_INT{'F'};
-  $CHAR_TO_INT{'B'} = $CHAR_TO_INT{'P'};
+
+  $CHAR_REMAP{'0'} = 'O';
+  $CHAR_REMAP{'1'} = 'I';
+  $CHAR_REMAP{'S'} = 'F';
+  $CHAR_REMAP{'B'} = 'P';
+
+  while (my ($from, $to) = each %CHAR_REMAP) {
+      $CHAR_TO_INT{$from} = $CHAR_TO_INT{$to};
+  }
   $INITIALIZED      = 1;
 }
 
@@ -122,6 +127,42 @@ sub decode {
        $integer = ($integer * 32) +   $char;
         }
     return $integer;
+}
+
+=head2 canonicalize STRING
+
+To compare a Record Locator string with another you can do:
+
+  print "ALWAYS TRUE\n" if $generator->decode("B0") == $generator->decode("PO");
+
+However, this method provides an alternative:
+
+  my $rl_string = $generator->encode(725);
+  print "ALWAYS TRUE\n" if $generator->canonicalize("b0") eq $rl_string;
+  print "ALWAYS TRUE\n" if $generator->canonicalize("BO") eq $rl_string;
+  print "ALWAYS TRUE\n" if $generator->canonicalize("P0") eq $rl_string;
+  print "ALWAYS TRUE\n" if $generator->canonicalize("po") eq $rl_string;
+
+This is primarily useful if you store the record locator rather than just the
+original integer and don't want to have to decode your strings to do
+comparisons.
+
+Takes a general Record Locator string and returns one with character mappings
+listed in L</DESCRIPTION> applied to it. This allows string comparisons to work.
+This returns C<undef> if a non-alphanumeric character is found in the string.
+
+=cut
+
+sub canonicalize {
+    my $self = shift;
+    my $str  = uc(shift);
+    my $result = '';
+    for my $char (split(//,$str)) { # Would tr/// be better?
+        return undef unless defined $CHAR_TO_INT{$char};
+        my $char = defined $CHAR_REMAP{$char} ? $CHAR_REMAP{$char} : $char;
+        $result .= $char;
+    }
+    return $result;
 }
 
 =head1 BUGS AND LIMITATIONS

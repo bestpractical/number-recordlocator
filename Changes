@@ -1,5 +1,8 @@
 Revision history for Number-RecordLocator
 
+0.004 Fri Nov 28 12:21:18 EST 2008
+    * Patch to add 'canonicalize' method 
+        From: Sterling Hanenkamp <sterling@hanenkamp.com>                                                                                                           
 0.003  Actually, that fix was from MARKSTOS. Sorry for the misattribution
 
 0.002  jjore pointed out a stray "use YAML" 
