@@ -1,4 +1,4 @@
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 BEGIN {
 use_ok( 'Number::RecordLocator' );
@@ -18,6 +18,7 @@ is ($gen->encode('123456'),'5RL2');
 is ($gen->decode('5RL2'), '123456');
 
 is($gen->decode($gen->encode('123456')), '123456');
+is($gen->decode($gen->encode('81289304929241823')), '81289304929241823');
 
 is($gen->decode('1234'),$gen->decode('I234'));
 is($gen->decode('10SB'),$gen->decode('IOFP'));

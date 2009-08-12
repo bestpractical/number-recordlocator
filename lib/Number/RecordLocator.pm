@@ -5,6 +5,7 @@ our $VERSION = '0.004';
 use warnings;
 use strict;
 use Carp;
+use bigint;
 
 use vars qw/%CHAR_TO_INT %INT_TO_CHAR $INITIALIZED %CHAR_REMAP/;
 
