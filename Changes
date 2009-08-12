@@ -1,5 +1,9 @@
 Revision history for Number-RecordLocator
 
+0.005
+	Support for 64 bit platforms from Satoshi Tanimoto 
+		<tanimoto.satoshi@gmail.com>                             
+
 0.004 Fri Nov 28 12:21:18 EST 2008
     * Patch to add 'canonicalize' method 
         From: Sterling Hanenkamp <sterling@hanenkamp.com>                                                                                                           
